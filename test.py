@@ -29,7 +29,7 @@ class DatabaseTests(unittest.TestCase):
     @staticmethod
     def getDatabaseUserRecord(userDb, expectedRecord):
         """Test helper method to fetch the first user record"""
-        db = userDb.getDbConnection()
+        db = userDb.db
         cursor = db.cursor()
         cursor.execute("SELECT * FROM Users")
         record = cursor.fetchone()

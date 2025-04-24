@@ -26,6 +26,3 @@ class UserDatabase:
         """
         cursor.execute(insertSql, values)
         self.db.commit()
-
-    def getDbConnection(self):
-        return self.db
