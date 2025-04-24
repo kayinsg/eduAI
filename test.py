@@ -74,5 +74,17 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(databaseUserRecord, expectedUserRecord)
 
 
+class PromptsTests(unittest.TestCase):
+
+    def testShouldProvideAPersonalizedPromptWithUserData(self):
+        # GIVEN the following preconditions corresponding to the system under test:
+        baseTextPrompt = prompt
+        userData = getUserData()
+        # WHEN the following module is executed:
+        finalPrompt = Prompt(userData).personalize(baseTextPrompt)
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(finalPrompt, finalExpectedPrompt)
+
+
 if __name__ == '__main__':
     unittest.main(testRunner=ColourTextTestRunner())
