@@ -4,6 +4,16 @@ from colour_runner.runner import ColourTextTestRunner
 from database import UserDatabase
 from _prompts import prompt, finalExpectedPrompt
 
+def getLoginUserData():
+    userData = [
+        ['FirstName', 'Jane'],
+        ['LastName', 'Doe'],
+        ['DateOfBirth', '03-22-1995'],
+        ['GradeLevel', 9],
+        ['TypeOfLearner', 'Textual'],
+        ['StrongPersonalInterest', 'Painting']
+    ]
+    return userData
 
 class DatabaseTests(unittest.TestCase):
     @staticmethod
