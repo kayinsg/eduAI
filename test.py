@@ -85,6 +85,31 @@ class PromptsTests(unittest.TestCase):
         # THEN the observable behavior should be verified as stated below:
         self.assertEqual(finalPrompt, finalExpectedPrompt)
 
+    def testShouldCreateUserProfileForPromptGivenUserData(self):
+        # GIVEN the following preconditions corresponding to the system under test:
+        def getUserData():
+            return [
+                ['FirstName', 'Jane'],
+                ['LastName', 'Doe'],
+                ['DateOfBirth', '03-22-1995'],
+                ['GradeLevel', 9],
+                ['TypeOfLearner', 'Textual'],
+                ['StrongPersonalInterest', 'Painting']
+            ]
+
+        userData = getUserData()
+        prompt = Prompt(userData)
+        expectedUserProfile = [
+            ['Age', 30],  # 2025 - 1995 = 30
+            ['Grade Level', 9],
+            ['TypeOfLearner', 'Textual'],
+            ['StrongPersonalInterest', 'Painting'],
+        ]
+        # WHEN the following module is executed:
+        userProfile = prompt.createPromptUserProfile(userData)
+
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(userProfile, expectedUserProfile)
 
 if __name__ == '__main__':
     unittest.main(testRunner=ColourTextTestRunner())
