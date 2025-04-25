@@ -4,7 +4,7 @@ from colour_runner.runner import ColourTextTestRunner
 from database import UserDatabase
 from _prompts import prompt, finalExpectedPrompt
 
-def getLoginUserData():
+def getUserData():
     userData = [
         ['FirstName', 'Jane'],
         ['LastName', 'Doe'],
@@ -27,18 +27,6 @@ class DatabaseTests(unittest.TestCase):
         return [col[1] for col in cursor.fetchall()]
 
     @staticmethod
-    def getUserLoginData():
-        userData = [
-            ['FirstName', 'Jane'],
-            ['LastName', 'Doe'],
-            ['DateOfBirth', '03-22-1995'],
-            ['GradeLevel', 9],
-            ['TypeOfLearner', 'Textual'],
-            ['StrongPersonalInterest', 'Painting']
-        ]
-        return userData
-
-    @staticmethod
     def getDatabaseUserRecord(userDb, expectedRecord):
         """Test helper method to fetch the first user record"""
         db = userDb.getDbConnection()
@@ -49,7 +37,7 @@ class DatabaseTests(unittest.TestCase):
 
     def testShouldCreateHeaderRowsForUser(self):
         # GIVEN
-        userLoginData = self.getUserLoginData()
+        userLoginData = getUserData()
         fakeDatabase = self.getFakeDatabase()
         expectedDatabaseFieldNames = [
             'FirstName',
@@ -68,7 +56,7 @@ class DatabaseTests(unittest.TestCase):
 
     def testShouldUploadUserInformationToDatabase(self):
         # GIVEN
-        userLoginData = self.getUserLoginData()
+        userLoginData = getUserData()
         expectedUserRecord = [
             'Jane',
             'Doe',
