@@ -2,7 +2,7 @@ import unittest
 import sqlite3
 from colour_runner.runner import ColourTextTestRunner
 from database import UserDatabase
-from _prompts import prompt, finalExpectedPrompt
+from prompts import Prompt
 
 def getUserData():
     userData = [
@@ -78,12 +78,75 @@ class PromptsTests(unittest.TestCase):
 
     def testShouldProvideAPersonalizedPromptWithUserData(self):
         # GIVEN the following preconditions corresponding to the system under test:
-        baseTextPrompt = prompt
-        userData = getUserData()
+        baseTextPrompt = """Ensure your answers meet these criteria:
+
+1. Easy to understand for the average person:
+   1.1 Use clear, simple language.
+   1.2 Avoid technical jargon or complex terminology.
+   1.3 Do not omit important details, even if they seem difficult. True understanding comes from full explanations.
+
+2. Break down complex ideas into basic components:
+   2.1 Present information in small, digestible chunks.
+   2.2 Use concrete examples to explain abstract ideas.
+
+3. Present information in a logical, flowing manner:
+   3.1 Use transition words (e.g., "next," "however," "therefore") to connect ideas.
+   3.2 Make sure each paragraph leads smoothly to the next.
+   3.3 Keep a clear, consistent narrative throughout.
+   3.4 Always use active voice (e.g., "You can do this" instead of "This can be done").
+
+4. Use paragraph format unless specified otherwise:
+   4.1 Split long explanations into multiple short paragraphs.
+   4.2 Keep paragraphs short (3-5 sentences) for easy reading.
+   4.3 If lists are needed, embed them naturally in paragraphs.
+
+---"""
+        userData = ""
+        userProfile = [
+            ['Age', 30],
+            ['Grade Level', 9],
+            ['TypeOfLearner', 'Textual'],
+            ['StrongPersonalInterest', 'Painting'],
+        ]
+
         # WHEN the following module is executed:
-        finalPrompt = Prompt(userData).personalize(baseTextPrompt)
+        finalPrompt = Prompt(userData).personalizePrompt(baseTextPrompt, userProfile)
+
         # THEN the observable behavior should be verified as stated below:
-        self.assertEqual(finalPrompt, finalExpectedPrompt)
+        expectedPrompt= """Ensure your answers meet these criteria:
+
+1. Easy to understand for the average person:
+   1.1 Use clear, simple language.
+   1.2 Avoid technical jargon or complex terminology.
+   1.3 Do not omit important details, even if they seem difficult. True understanding comes from full explanations.
+
+2. Break down complex ideas into basic components:
+   2.1 Present information in small, digestible chunks.
+   2.2 Use concrete examples to explain abstract ideas.
+
+3. Present information in a logical, flowing manner:
+   3.1 Use transition words (e.g., "next," "however," "therefore") to connect ideas.
+   3.2 Make sure each paragraph leads smoothly to the next.
+   3.3 Keep a clear, consistent narrative throughout.
+   3.4 Always use active voice (e.g., "You can do this" instead of "This can be done").
+
+4. Use paragraph format unless specified otherwise:
+   4.1 Split long explanations into multiple short paragraphs.
+   4.2 Keep paragraphs short (3-5 sentences) for easy reading.
+   4.3 If lists are needed, embed them naturally in paragraphs.
+
+---
+User Profile:
+- Age: 30
+- Learning Preference: Textual
+- Key Interest: Painting
+
+---
+
+Clarification Request:
+I feel the above requires more background knowledge than I currently have. 
+Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style."""
+        self.assertEqual(finalPrompt, expectedPrompt)
 
     def testShouldCreateUserProfileForPromptGivenUserData(self):
         # GIVEN the following preconditions corresponding to the system under test:
