@@ -9,7 +9,7 @@ class Prompt:
         gradeLevel = None
         learningStyle = None
         interest = None
-
+        
         for item in userData:
             if item[0] == 'DateOfBirth':
                 dobStr = item[1]
@@ -22,7 +22,7 @@ class Prompt:
                 learningStyle = item[1]
             elif item[0] == 'StrongPersonalInterest':
                 interest = item[1]
-
+        
         return [
             ['Age', age],
             ['Grade Level', gradeLevel],
@@ -34,6 +34,7 @@ class Prompt:
         age = None
         learningStyle = None
         interest = None
+        gradeLevel = None
 
         for item in userProfile:
             if item[0] == 'Age':
@@ -42,34 +43,34 @@ class Prompt:
                 learningStyle = item[1]
             elif item[0] == 'StrongPersonalInterest':
                 interest = item[1]
+            elif item[0] == 'Grade Level':
+                gradeLevel = item[1]
 
-        personalizedSection = f"""
-User Profile:
+        profileSection = f"""User Profile:
 - Age: {age}
+- Grade Level: {gradeLevel}
 - Learning Preference: {learningStyle}
 - Key Interest: {interest}
 """
 
-        finalPrompt = (
-            basePrompt +
-            personalizedSection +
-            "\n---\n\nClarification Request:\nI feel the above requires more background knowledge than I currently have. \n" +
-            "Please explain it in more detail, using expressive and clear language, " +
-            "while tailoring examples to the above user's profile interests and learning style."
-        )
+        return f"""{basePrompt}
+{profileSection}
+---
 
-        return finalPrompt.strip()
+Clarification Request:
+I feel the above requires more background knowledge than I currently have. 
+Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.""".strip()
 
     def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
         parts = basePrompt.split('---', 1)
-
+        
         if len(parts) > 1:
             lastLineBeforeSep = parts[0].split('\n')[-1]
             indent = len(lastLineBeforeSep) - len(lastLineBeforeSep.lstrip())
-
+            
             indentedQuestion = ' ' * indent + f'"{specificQuestion}"\n\n'
             indentedSeparator = ' ' * indent + '---'
-
+            
             modifiedPrompt = f"{parts[0].rstrip()}\n\n{indentedQuestion}{indentedSeparator}{parts[1]}"
             return modifiedPrompt
         return basePrompt
