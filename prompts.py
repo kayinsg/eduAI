@@ -59,3 +59,17 @@ User Profile:
             ['TypeOfLearner', learningStyle],
             ['StrongPersonalInterest', interest],
         ]
+
+    def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
+        parts = basePrompt.split('---', 1)
+
+        if len(parts) > 1:
+            last_line_before_sep = parts[0].split('\n')[-1]
+            indent = len(last_line_before_sep) - len(last_line_before_sep.lstrip())
+
+            indented_question = ' ' * indent + f'"{specificQuestion}"\n\n'
+            indented_separator = ' ' * indent + '---'
+
+            modified_prompt = f"{parts[0].rstrip()}\n\n{indented_question}{indented_separator}{parts[1]}"
+            return modified_prompt
+        return basePrompt
