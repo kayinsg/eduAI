@@ -174,5 +174,48 @@ Please explain it in more detail, using expressive and clear language, while tai
         # THEN the observable behavior should be verified as stated below:
         self.assertEqual(userProfile, expectedUserProfile)
 
+    def testShouldPlaceSpecificQuestionWithinGeneralPrompt(self):
+        # GIVEN the following preconditions corresponding to the system under test:
+        basePrompt = """
+        4.3 If lists are needed, embed them naturally in paragraphs.
+
+        ---
+        User Profile:
+        - Age: 30
+        - Learning Preference: Textual
+        - Key Interest: Painting
+
+        ---
+
+        Clarification Request:
+        I feel the above requires more background knowledge than I currently have.
+        Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
+        """
+        expectedBasePrompt = """
+        4.3 If lists are needed, embed them naturally in paragraphs.
+
+        "Why is the sky blue?"
+
+        ---
+        User Profile:
+        - Age: 30
+        - Learning Preference: Textual
+        - Key Interest: Painting
+
+        ---
+
+        Clarification Request:
+        I feel the above requires more background knowledge than I currently have.
+        Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
+        """
+        userData = ""
+        specificQuestion = "Why is the sky blue?"
+        prompt = Prompt(userData)
+        # WHEN the following module is executed:
+        finalPrompt = prompt.placeSpecificQuestionInPrompt(basePrompt, specificQuestion)
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(finalPrompt, expectedBasePrompt)
+
+
 if __name__ == '__main__':
     unittest.main(testRunner=ColourTextTestRunner())
