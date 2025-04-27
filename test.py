@@ -1,8 +1,8 @@
 import unittest
 import sqlite3
 from colour_runner.runner import ColourTextTestRunner
-from database import UserDatabase
-from prompts import Prompt
+from UserDatabase import UserDatabase
+from PromptPersonalizer import Prompt
 
 def getUserData():
     userData = [
