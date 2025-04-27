@@ -218,4 +218,4 @@ Please explain it in more detail, using expressive and clear language, while tai
 
 
 if __name__ == '__main__':
-    unittest.main(testRunner=ColourTextTestRunner())
+    unittest.main(testRunner=ColourTextTestRunner(verbosity=2))
