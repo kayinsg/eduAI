@@ -76,6 +76,32 @@ class DatabaseTests(unittest.TestCase):
 
 class PromptsTests(unittest.TestCase):
 
+    def testShouldCreateUserProfileForPromptGivenUserData(self):
+        # GIVEN the following preconditions corresponding to the system under test:
+        def getUserData():
+            return [
+                ['FirstName', 'Jane'],
+                ['LastName', 'Doe'],
+                ['DateOfBirth', '03-22-1995'],
+                ['GradeLevel', 9],
+                ['TypeOfLearner', 'Textual'],
+                ['StrongPersonalInterest', 'Painting']
+            ]
+
+        userData = getUserData()
+        prompt = Prompt(userData)
+        expectedUserProfile = [
+            ['Age', 30],  # 2025 - 1995 = 30
+            ['Grade Level', 9],
+            ['TypeOfLearner', 'Textual'],
+            ['StrongPersonalInterest', 'Painting'],
+        ]
+        # WHEN the following module is executed:
+        userProfile = prompt.createPromptUserProfile(userData)
+
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(userProfile, expectedUserProfile)
+
     def testShouldProvideAPersonalizedPromptWithUserData(self):
         # GIVEN the following preconditions corresponding to the system under test:
         baseTextPrompt = """Ensure your answers meet these criteria:
@@ -148,32 +174,6 @@ Clarification Request:
 I feel the above requires more background knowledge than I currently have. 
 Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style."""
         self.assertEqual(finalPrompt, expectedPrompt)
-
-    def testShouldCreateUserProfileForPromptGivenUserData(self):
-        # GIVEN the following preconditions corresponding to the system under test:
-        def getUserData():
-            return [
-                ['FirstName', 'Jane'],
-                ['LastName', 'Doe'],
-                ['DateOfBirth', '03-22-1995'],
-                ['GradeLevel', 9],
-                ['TypeOfLearner', 'Textual'],
-                ['StrongPersonalInterest', 'Painting']
-            ]
-
-        userData = getUserData()
-        prompt = Prompt(userData)
-        expectedUserProfile = [
-            ['Age', 30],  # 2025 - 1995 = 30
-            ['Grade Level', 9],
-            ['TypeOfLearner', 'Textual'],
-            ['StrongPersonalInterest', 'Painting'],
-        ]
-        # WHEN the following module is executed:
-        userProfile = prompt.createPromptUserProfile(userData)
-
-        # THEN the observable behavior should be verified as stated below:
-        self.assertEqual(userProfile, expectedUserProfile)
 
     def testShouldPlaceSpecificQuestionWithinGeneralPrompt(self):
         # GIVEN the following preconditions corresponding to the system under test:
