@@ -4,6 +4,11 @@ class Prompt:
     def __init__(self, userData):
         self.userData = userData
 
+    def personalize(self, basePrompt, specificQuestion):
+        userProfile = self.createPromptUserProfile(self.userData)
+        personalizedPrompt = self.personalizePrompt(basePrompt, userProfile)
+        return self.placeSpecificQuestionInPrompt(personalizedPrompt, specificQuestion)
+
     def createPromptUserProfile(self, userData):
         age = None
         gradeLevel = None
