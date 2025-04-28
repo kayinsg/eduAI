@@ -138,6 +138,7 @@ class PromptsTests(unittest.TestCase):
 ---
 User Profile:
 - Age: 30
+- Grade Level: 9
 - Learning Preference: Textual
 - Key Interest: Painting
 
