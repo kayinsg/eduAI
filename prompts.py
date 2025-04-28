@@ -4,6 +4,32 @@ class Prompt:
     def __init__(self, userData):
         self.userData = userData
 
+    def createPromptUserProfile(self, userData):
+        age = None
+        gradeLevel = None
+        learningStyle = None
+        interest = None
+
+        for item in userData:
+            if item[0] == 'DateOfBirth':
+                dobStr = item[1]
+                birthYear = int(dobStr.split('-')[2])
+                currentYear = pendulum.now().year
+                age = currentYear - birthYear
+            elif item[0] == 'GradeLevel':
+                gradeLevel = item[1]
+            elif item[0] == 'TypeOfLearner':
+                learningStyle = item[1]
+            elif item[0] == 'StrongPersonalInterest':
+                interest = item[1]
+
+        return [
+            ['Age', age],
+            ['Grade Level', gradeLevel],
+            ['TypeOfLearner', learningStyle],
+            ['StrongPersonalInterest', interest],
+        ]
+
     def personalizePrompt(self, basePrompt, userProfile):
         age = None
         learningStyle = None
@@ -34,42 +60,16 @@ User Profile:
 
         return finalPrompt.strip()
 
-    def createPromptUserProfile(self, userData):
-        age = None
-        gradeLevel = None
-        learningStyle = None
-        interest = None
-
-        for item in userData:
-            if item[0] == 'DateOfBirth':
-                dobStr = item[1]
-                birthYear = int(dobStr.split('-')[2])
-                currentYear = pendulum.now().year
-                age = currentYear - birthYear
-            elif item[0] == 'GradeLevel':
-                gradeLevel = item[1]
-            elif item[0] == 'TypeOfLearner':
-                learningStyle = item[1]
-            elif item[0] == 'StrongPersonalInterest':
-                interest = item[1]
-
-        return [
-            ['Age', age],
-            ['Grade Level', gradeLevel],
-            ['TypeOfLearner', learningStyle],
-            ['StrongPersonalInterest', interest],
-        ]
-
     def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
         parts = basePrompt.split('---', 1)
 
         if len(parts) > 1:
-            last_line_before_sep = parts[0].split('\n')[-1]
-            indent = len(last_line_before_sep) - len(last_line_before_sep.lstrip())
+            lastLineBeforeSep = parts[0].split('\n')[-1]
+            indent = len(lastLineBeforeSep) - len(lastLineBeforeSep.lstrip())
 
-            indented_question = ' ' * indent + f'"{specificQuestion}"\n\n'
-            indented_separator = ' ' * indent + '---'
+            indentedQuestion = ' ' * indent + f'"{specificQuestion}"\n\n'
+            indentedSeparator = ' ' * indent + '---'
 
-            modified_prompt = f"{parts[0].rstrip()}\n\n{indented_question}{indented_separator}{parts[1]}"
-            return modified_prompt
+            modifiedPrompt = f"{parts[0].rstrip()}\n\n{indentedQuestion}{indentedSeparator}{parts[1]}"
+            return modifiedPrompt
         return basePrompt
