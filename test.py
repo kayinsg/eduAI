@@ -127,7 +127,7 @@ class PromptsTests(unittest.TestCase):
    4.3 If lists are needed, embed them naturally in paragraphs.
 
 ---"""
-        userData = ""
+        specificQuestion = ""
         userProfile = [
             ['Age', 30],
             ['Grade Level', 9],
@@ -136,7 +136,7 @@ class PromptsTests(unittest.TestCase):
         ]
 
         # WHEN the following module is executed:
-        finalPrompt = Prompt(userData).personalizePrompt(baseTextPrompt, userProfile)
+        finalPrompt = Prompt(specificQuestion).personalizePrompt(baseTextPrompt, userProfile)
 
         # THEN the observable behavior should be verified as stated below:
         expectedPrompt= """Ensure your answers meet these criteria:
@@ -209,9 +209,8 @@ Please explain it in more detail, using expressive and clear language, while tai
         I feel the above requires more background knowledge than I currently have.
         Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
         """
-        userData = ""
         specificQuestion = "Why is the sky blue?"
-        prompt = Prompt(userData)
+        prompt = Prompt(specificQuestion)
         # WHEN the following module is executed:
         finalPrompt = prompt.placeSpecificQuestionInPrompt(basePrompt, specificQuestion)
         # THEN the observable behavior should be verified as stated below:

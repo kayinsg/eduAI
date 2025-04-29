@@ -1,13 +1,13 @@
 import pendulum
 
 class Prompt:
-    def __init__(self, userData):
-        self.userData = userData
+    def __init__(self, specificQuestion):
+        self.specificQuestion = specificQuestion
 
-    def personalize(self, basePrompt, specificQuestion):
-        userProfile = self.createPromptUserProfile(self.userData)
+    def personalize(self, basePrompt, userData):
+        userProfile = self.createPromptUserProfile(userData)
         personalizedPrompt = self.personalizePrompt(basePrompt, userProfile)
-        return self.placeSpecificQuestionInPrompt(personalizedPrompt, specificQuestion)
+        return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
 
     def createPromptUserProfile(self, userData):
         age = None
