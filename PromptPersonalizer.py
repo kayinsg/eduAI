@@ -10,28 +10,25 @@ class Prompt:
         return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
 
     def createPromptUserProfile(self, userData):
-        age = None
-        gradeLevel = None
-        learningStyle = None
-        interest = None
+        userProfile = {}
         
         for item in userData:
-            if item[0] == 'DateOfBirth':
+            if item[0] in ("FirstName" or "LastName"):
+                pass
+            elif item[0] == 'DateOfBirth':
                 dobStr = item[1]
                 birthYear = int(dobStr.split('-')[2])
                 currentYear = pendulum.now().year
                 age = currentYear - birthYear
-            elif item[0] == 'GradeLevel':
-                gradeLevel = item[1]
-            elif item[0] == 'TypeOfLearner':
-                learningStyle = item[1]
-            elif item[0] == 'StrongPersonalInterest':
-                interest = item[1]
+                userProfile['Age'] = age
+            else:
+                userProfile[item[0]] = item[1]
+
         return [
-            ['Age', age],
-            ['Grade Level', gradeLevel],
-            ['TypeOfLearner', learningStyle],
-            ['StrongPersonalInterest', interest],
+            ['Age', userProfile['Age']],
+            ['Grade Level', userProfile['GradeLevel']],
+            ['TypeOfLearner', userProfile['TypeOfLearner']],
+            ['StrongPersonalInterest', userProfile['StrongPersonalInterest']],
         ]
 
     def personalizePrompt(self, basePrompt, userProfile):
