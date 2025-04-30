@@ -27,7 +27,6 @@ class Prompt:
                 learningStyle = item[1]
             elif item[0] == 'StrongPersonalInterest':
                 interest = item[1]
-        
         return [
             ['Age', age],
             ['Grade Level', gradeLevel],
@@ -40,7 +39,6 @@ class Prompt:
         learningStyle = None
         interest = None
         gradeLevel = None
-
         for item in userProfile:
             if item[0] == 'Age':
                 age = item[1]
@@ -50,14 +48,12 @@ class Prompt:
                 interest = item[1]
             elif item[0] == 'Grade Level':
                 gradeLevel = item[1]
-
         profileSection = f"""User Profile:
 - Age: {age}
 - Grade Level: {gradeLevel}
 - Learning Preference: {learningStyle}
 - Key Interest: {interest}
 """
-
         return f"""{basePrompt}
 {profileSection}
 ---
@@ -68,14 +64,11 @@ Please explain it in more detail, using expressive and clear language, while tai
 
     def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
         parts = basePrompt.split('---', 1)
-        
         if len(parts) > 1:
             lastLineBeforeSep = parts[0].split('\n')[-1]
             indent = len(lastLineBeforeSep) - len(lastLineBeforeSep.lstrip())
-            
             indentedQuestion = ' ' * indent + f'"{specificQuestion}"\n\n'
             indentedSeparator = ' ' * indent + '---'
-            
             modifiedPrompt = f"{parts[0].rstrip()}\n\n{indentedQuestion}{indentedSeparator}{parts[1]}"
             return modifiedPrompt
         return basePrompt
