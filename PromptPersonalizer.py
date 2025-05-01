@@ -13,16 +13,19 @@ class Prompt:
         userProfile = {}
         
         for item in userData:
-            if item[0] in ("FirstName" or "LastName"):
+            field = item[0]
+            value = item[1]
+
+            if field in ("FirstName" or "LastName"):
                 pass
-            elif item[0] == 'DateOfBirth':
-                dobStr = item[1]
+            elif field == 'DateOfBirth':
+                dobStr = value
                 birthYear = int(dobStr.split('-')[2])
                 currentYear = pendulum.now().year
                 age = currentYear - birthYear
                 userProfile['Age'] = age
             else:
-                userProfile[item[0]] = item[1]
+                userProfile[field] = value
 
         return [
             ['Age', userProfile['Age']],
