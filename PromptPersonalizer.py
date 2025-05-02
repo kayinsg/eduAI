@@ -59,7 +59,7 @@ class Prompt:
 ---
 
 Clarification Request:
-I feel the above requires more background knowledge than I currently have. 
+I feel the above requires more background knowledge than I currently have.
 Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.""".strip()
 
     def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):

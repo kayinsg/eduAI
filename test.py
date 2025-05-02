@@ -168,7 +168,7 @@ User Profile:
 ---
 
 Clarification Request:
-I feel the above requires more background knowledge than I currently have. 
+I feel the above requires more background knowledge than I currently have.
 Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style."""
         self.assertEqual(finalPrompt, expectedPrompt)
 
@@ -287,7 +287,7 @@ User Profile:
 ---
 
 Clarification Request:
-I feel the above requires more background knowledge than I currently have. 
+I feel the above requires more background knowledge than I currently have.
 Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style."""
         # WHEN the following module is executed:
         finalPrompt = Prompt(specificQuestion).personalize(basePrompt, userData)
