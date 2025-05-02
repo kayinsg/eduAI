@@ -106,7 +106,6 @@ class PromptsTests(unittest.TestCase):
     def testShouldProvideAPersonalizedPromptWithUserData(self):
         # GIVEN the following preconditions corresponding to the system under test:
         baseTextPrompt = """Ensure your answers meet these criteria:
-
 1. Easy to understand for the average person:
    1.1 Use clear, simple language.
    1.2 Avoid technical jargon or complex terminology.
@@ -126,7 +125,6 @@ class PromptsTests(unittest.TestCase):
    4.1 Split long explanations into multiple short paragraphs.
    4.2 Keep paragraphs short (3-5 sentences) for easy reading.
    4.3 If lists are needed, embed them naturally in paragraphs.
-
 ---"""
         specificQuestion = ""
         userProfile = [
@@ -141,7 +139,6 @@ class PromptsTests(unittest.TestCase):
 
         # THEN the observable behavior should be verified as stated below:
         expectedPrompt= """Ensure your answers meet these criteria:
-
 1. Easy to understand for the average person:
    1.1 Use clear, simple language.
    1.2 Avoid technical jargon or complex terminology.
@@ -161,7 +158,6 @@ class PromptsTests(unittest.TestCase):
    4.1 Split long explanations into multiple short paragraphs.
    4.2 Keep paragraphs short (3-5 sentences) for easy reading.
    4.3 If lists are needed, embed them naturally in paragraphs.
-
 ---
 User Profile:
 - Age: 30
