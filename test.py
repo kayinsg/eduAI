@@ -89,7 +89,8 @@ class PromptsTests(unittest.TestCase):
             ]
 
         userData = getUserData()
-        prompt = Prompt(userData)
+        specificQuestion = ""
+        prompt = Prompt(specificQuestion)
         expectedUserProfile = [
             ['Age', 30],  # 2025 - 1995 = 30
             ['Grade Level', 9],
