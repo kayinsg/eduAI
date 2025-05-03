@@ -11,7 +11,7 @@ class Prompt:
 
     def createPromptUserProfile(self, userData):
         userProfile = {}
-        
+
         for item in userData:
             field = item[0]
             value = item[1]
@@ -63,12 +63,26 @@ I feel the above requires more background knowledge than I currently have.
 Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.""".strip()
 
     def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
-        parts = basePrompt.split('---', 1)
-        if len(parts) > 1:
-            lastLineBeforeSep = parts[0].split('\n')[-1]
-            indent = len(lastLineBeforeSep) - len(lastLineBeforeSep.lstrip())
-            indentedQuestion = ' ' * indent + f'"{specificQuestion}"\n\n'
-            indentedSeparator = ' ' * indent + '---'
-            modifiedPrompt = f"{parts[0].rstrip()}\n\n{indentedQuestion}{indentedSeparator}{parts[1]}"
+            separator = "---"
+            promptSections = basePrompt.split(separator, 1)
+
+            if len(promptSections) < 2:
+                return basePrompt
+
+            contentBeforeSeparator = promptSections[0]
+            contentAfterSeparator = promptSections[1]
+
+            lastLineBeforeSeparator = contentBeforeSeparator.split('\n')[-1]
+            indentation = len(lastLineBeforeSeparator) - len(lastLineBeforeSeparator.lstrip())
+
+            indentedQuestion = ' ' * indentation + f'"{specificQuestion}"\n\n'
+            indentedSeparator = ' ' * indentation + separator
+
+            modifiedPrompt = (
+                contentBeforeSeparator.rstrip() + '\n\n' +
+                indentedQuestion +
+                indentedSeparator +
+                contentAfterSeparator
+            )
+
             return modifiedPrompt
-        return basePrompt
