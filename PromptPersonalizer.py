@@ -16,7 +16,7 @@ class Prompt:
             field = item[0]
             value = item[1]
 
-            if field in ("FirstName" or "LastName"):
+            if field in ("FirstName", "LastName"):
                 pass
             elif field == 'DateOfBirth':
                 dobStr = value
