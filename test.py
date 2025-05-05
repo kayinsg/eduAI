@@ -16,6 +16,7 @@ def getUserData():
     return userData
 
 class DatabaseTests(unittest.TestCase):
+
     @staticmethod
     def getFakeDatabase():
         return sqlite3.connect(':memory:')
@@ -75,6 +76,8 @@ class DatabaseTests(unittest.TestCase):
 
 
 class PromptsTests(unittest.TestCase):
+    def setUp(self):
+        self.maxDiff = None
 
     def testShouldCreateUserProfileForPromptGivenUserData(self):
         # GIVEN the following preconditions corresponding to the system under test:
