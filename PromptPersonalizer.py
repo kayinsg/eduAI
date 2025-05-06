@@ -35,24 +35,17 @@ class Prompt:
         ]
 
     def personalizePrompt(self, basePrompt, userProfile):
-        age = None
-        learningStyle = None
-        interest = None
-        gradeLevel = None
+        promptUserProfile = { }
         for item in userProfile:
-            if item[0] == 'Age':
-                age = item[1]
-            elif item[0] == 'TypeOfLearner':
-                learningStyle = item[1]
-            elif item[0] == 'StrongPersonalInterest':
-                interest = item[1]
-            elif item[0] == 'Grade Level':
-                gradeLevel = item[1]
+            field = item[0]
+            value = item[1]
+            promptUserProfile[field] = value
+
         profileSection = f"""User Profile:
-- Age: {age}
-- Grade Level: {gradeLevel}
-- Learning Preference: {learningStyle}
-- Key Interest: {interest}
+- Age: {promptUserProfile['Age']}
+- Grade Level: {promptUserProfile['Grade Level']}
+- Learning Preference: {promptUserProfile['TypeOfLearner']}
+- Key Interest: {promptUserProfile['StrongPersonalInterest']}
 """
         return f"""{basePrompt}
 {profileSection}
