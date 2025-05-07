@@ -10,29 +10,7 @@ class Prompt:
         return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
 
     def createPromptUserProfile(self, userData):
-        userProfile = {}
-
-        for item in userData:
-            field = item[0]
-            value = item[1]
-
-            if field in ("FirstName", "LastName"):
-                pass
-            elif field == 'DateOfBirth':
-                dobStr = value
-                birthYear = int(dobStr.split('-')[2])
-                currentYear = pendulum.now().year
-                age = currentYear - birthYear
-                userProfile['Age'] = age
-            else:
-                userProfile[field] = value
-
-        return [
-            ['Age', userProfile['Age']],
-            ['Grade Level', userProfile['GradeLevel']],
-            ['TypeOfLearner', userProfile['TypeOfLearner']],
-            ['StrongPersonalInterest', userProfile['StrongPersonalInterest']],
-        ]
+        return UserProfile(userData).createUserProfile()
 
     def personalizePrompt(self, basePrompt, userProfile):
         promptUserProfile = { }
@@ -79,3 +57,37 @@ Please explain it in more detail, using expressive and clear language, while tai
             )
 
             return modifiedPrompt
+
+class UserProfile:
+    def __init__(self, userData):
+        self.userData = userData
+        self.userProfile = {}
+
+    def createUserProfile(self):
+        self.processUserData()
+        return self.getCompletedUserProfile()
+
+    def processUserData(self):
+        for item in self.userData:
+            field = item[0]
+            value = item[1]
+
+            if field in ("FirstName", "LastName"):
+                pass
+            elif field == 'DateOfBirth':
+                self.userProfile['Age'] = self.computeAgeFromDateOfBirth(value)
+            else:
+                self.userProfile[field] = value
+
+    def computeAgeFromDateOfBirth(self, dateOfBirth):
+        birthYear = int(dateOfBirth.split('-')[2])
+        currentYear = pendulum.now().year
+        return currentYear - birthYear
+
+    def getCompletedUserProfile(self):
+        return [
+            ['Age', self.userProfile['Age']],
+            ['Grade Level', self.userProfile['GradeLevel']],
+            ['TypeOfLearner', self.userProfile['TypeOfLearner']],
+            ['StrongPersonalInterest', self.userProfile['StrongPersonalInterest']],
+        ]
