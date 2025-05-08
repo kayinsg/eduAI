@@ -10,28 +10,10 @@ class Prompt:
         return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
 
     def createPromptUserProfile(self, userData):
-        return UserProfile(userData).createUserProfile()
+        return PromptUserProfile(userData).createUserProfile()
 
     def personalizePrompt(self, basePrompt, userProfile):
-        promptUserProfile = { }
-        for item in userProfile:
-            field = item[0]
-            value = item[1]
-            promptUserProfile[field] = value
-
-        profileSection = f"""User Profile:
-- Age: {promptUserProfile['Age']}
-- Grade Level: {promptUserProfile['Grade Level']}
-- Learning Preference: {promptUserProfile['TypeOfLearner']}
-- Key Interest: {promptUserProfile['StrongPersonalInterest']}
-"""
-        return f"""{basePrompt}
-{profileSection}
----
-
-Clarification Request:
-I feel the above requires more background knowledge than I currently have.
-Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.""".strip()
+        return PromptPersonalizer(basePrompt).personalize(userProfile)
 
     def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
             separator = "---"
@@ -58,7 +40,7 @@ Please explain it in more detail, using expressive and clear language, while tai
 
             return modifiedPrompt
 
-class UserProfile:
+class PromptUserProfile:
     def __init__(self, userData):
         self.userData = userData
         self.userProfile = {}
@@ -91,3 +73,41 @@ class UserProfile:
             ['TypeOfLearner', self.userProfile['TypeOfLearner']],
             ['StrongPersonalInterest', self.userProfile['StrongPersonalInterest']],
         ]
+
+
+class PromptPersonalizer:
+    def __init__(self, basePrompt):
+        self.basePrompt = basePrompt
+        self.promptUserProfile = {}
+
+    def personalize(self, userProfile):
+        self.buildUserProfileHashMap(userProfile)
+        personalizedPrompt = self.getFinalPrompt(self.basePrompt)
+        return personalizedPrompt
+
+    def buildUserProfileHashMap(self, userProfile):
+        for item in userProfile:
+            field = item[0]
+            value = item[1]
+            self.promptUserProfile[field] = value
+
+    def getFinalPrompt(self, basePrompt):
+        personalizedPrompt = f"""{basePrompt}
+{self.getProfileSection()}
+{self.getQuestionClarifier()}"""
+        return personalizedPrompt
+
+    def getProfileSection(self):
+        return f"""User Profile:
+- Age: {self.promptUserProfile['Age']}
+- Grade Level: {self.promptUserProfile['Grade Level']}
+- Learning Preference: {self.promptUserProfile['TypeOfLearner']}
+- Key Interest: {self.promptUserProfile['StrongPersonalInterest']}
+"""
+
+    def getQuestionClarifier(self):
+        return """---
+
+Clarification Request:
+I feel the above requires more background knowledge than I currently have.
+Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.""".strip()
