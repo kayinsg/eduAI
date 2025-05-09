@@ -253,7 +253,6 @@ Please explain it in more detail, using expressive and clear language, while tai
     4.3 If lists are needed, embed them naturally in paragraphs.
 
 ---
-
 """
         expectedFinalPrompt = """Ensure your answers meet these criteria:
 1. Easy to understand for the average person:
@@ -279,7 +278,6 @@ Please explain it in more detail, using expressive and clear language, while tai
 "Why is the sky blue?"
 
 ---
-
 
 User Profile:
 - Age: 17
