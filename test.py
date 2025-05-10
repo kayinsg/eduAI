@@ -178,37 +178,37 @@ Please explain it in more detail, using expressive and clear language, while tai
     def testShouldPlaceSpecificQuestionWithinGeneralPrompt(self):
         # GIVEN the following preconditions corresponding to the system under test:
         basePrompt = """
-        4.3 If lists are needed, embed them naturally in paragraphs.
+4.3 If lists are needed, embed them naturally in paragraphs.
 
-        ---
-        User Profile:
-        - Age: 30
-        - Learning Preference: Textual
-        - Key Interest: Painting
+---
+User Profile:
+- Age: 30
+- Learning Preference: Textual
+- Key Interest: Painting
 
-        ---
+---
 
-        Clarification Request:
-        I feel the above requires more background knowledge than I currently have.
-        Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
-        """
+Clarification Request:
+I feel the above requires more background knowledge than I currently have.
+Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
+"""
         expectedBasePrompt = """
-        4.3 If lists are needed, embed them naturally in paragraphs.
+4.3 If lists are needed, embed them naturally in paragraphs.
 
-        "Why is the sky blue?"
+"Why is the sky blue?"
 
-        ---
-        User Profile:
-        - Age: 30
-        - Learning Preference: Textual
-        - Key Interest: Painting
+---
+User Profile:
+- Age: 30
+- Learning Preference: Textual
+- Key Interest: Painting
 
-        ---
+---
 
-        Clarification Request:
-        I feel the above requires more background knowledge than I currently have.
-        Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
-        """
+Clarification Request:
+I feel the above requires more background knowledge than I currently have.
+Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.
+"""
         specificQuestion = "Why is the sky blue?"
         prompt = Prompt(specificQuestion)
         # WHEN the following module is executed:
