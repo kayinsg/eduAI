@@ -19,26 +19,18 @@ class Prompt:
             separator = "---"
             promptSections = basePrompt.split(separator, 1)
 
-            if len(promptSections) < 2:
-                return basePrompt
-
             contentBeforeSeparator = promptSections[0]
             contentAfterSeparator = promptSections[1]
 
-            lastLineBeforeSeparator = contentBeforeSeparator.split('\n')[-1]
-            indentation = len(lastLineBeforeSeparator) - len(lastLineBeforeSeparator.lstrip())
-
-            indentedQuestion = ' ' * indentation + f'"{specificQuestion}"\n\n'
-            indentedSeparator = ' ' * indentation + separator
-
             modifiedPrompt = (
                 contentBeforeSeparator.rstrip() + '\n\n' +
-                indentedQuestion +
-                indentedSeparator +
+                f'"{specificQuestion}"\n\n' +
+                separator +
                 contentAfterSeparator
             )
 
             return modifiedPrompt
+
 
 class PromptUserProfile:
     def __init__(self, userData):
