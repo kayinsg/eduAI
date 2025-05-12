@@ -78,10 +78,8 @@ class PromptPersonalizer:
         return personalizedPrompt
 
     def buildUserProfileHashMap(self, userProfile):
-        for item in userProfile:
-            field = item[0]
-            value = item[1]
-            self.promptUserProfile[field] = value
+        assignValuesToPromptUserProfile = lambda item: self.promptUserProfile.update({item[0]: item[1]})
+        list(map(assignValuesToPromptUserProfile, userProfile))
 
     def getFinalPrompt(self, basePrompt):
         personalizedPrompt = f"""{basePrompt}
