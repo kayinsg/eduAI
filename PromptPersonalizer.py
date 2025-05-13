@@ -82,9 +82,15 @@ class PromptPersonalizer:
         list(map(assignValuesToPromptUserProfile, userProfile))
 
     def getFinalPrompt(self, basePrompt):
-        personalizedPrompt = f"""{basePrompt}
-{self.getProfileSection()}
-{self.getQuestionClarifier()}"""
+        profileSection = self.getProfileSection()
+        questionClarifier = self.getQuestionClarifier()
+
+        personalizedPrompt = (
+            f"{basePrompt}\n"
+            f"{profileSection}\n"
+            f"{questionClarifier}"
+        )
+
         return personalizedPrompt
 
     def getProfileSection(self):
