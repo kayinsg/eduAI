@@ -94,16 +94,20 @@ class PromptPersonalizer:
         return personalizedPrompt
 
     def getProfileSection(self):
-        return f"""User Profile:
-- Age: {self.promptUserProfile['Age']}
-- Grade Level: {self.promptUserProfile['Grade Level']}
-- Learning Preference: {self.promptUserProfile['TypeOfLearner']}
-- Key Interest: {self.promptUserProfile['StrongPersonalInterest']}
-"""
+        return (
+            "User Profile:\n"
+            f"- Age: {self.promptUserProfile['Age']}\n"
+            f"- Grade Level: {self.promptUserProfile['Grade Level']}\n"
+            f"- Learning Preference: {self.promptUserProfile['TypeOfLearner']}\n"
+            f"- Key Interest: {self.promptUserProfile['StrongPersonalInterest']}\n"
+        )
 
     def getQuestionClarifier(self):
-        return """---
-
-Clarification Request:
-I feel the above requires more background knowledge than I currently have.
-Please explain it in more detail, using expressive and clear language, while tailoring examples to the above user's profile interests and learning style.""".strip()
+        return (
+            "---\n"
+            "\n"
+            "Clarification Request:\n"
+            "I feel the above requires more background knowledge than I currently have.\n"
+            "Please explain it in more detail, using expressive and clear language, "
+            "while tailoring examples to the above user's profile interests and learning style."
+        )
