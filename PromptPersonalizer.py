@@ -38,8 +38,28 @@ class PromptUserProfile:
         self.userProfile = {}
 
     def createUserProfile(self):
+        self.validateUserData()
         self.processUserData()
         return self.getCompletedUserProfile()
+
+    def validateUserData(self):
+        requiredData = [
+            'DateOfBirth',
+            'GradeLevel',
+            'TypeOfLearner',
+            'StrongPersonalInterest',
+        ]
+        receivedKeys = []
+        for item in self.userData:
+            receivedKeys.append(item[0])
+        missingKeys = []
+        for key in requiredData:
+            if key not in receivedKeys:
+                missingKeys.append(key)
+        if len(missingKeys) > 0:
+            errorMessage = 'You have malformed user data. Your data must contain all of the following values: '
+            errorMessage += ', '.join(requiredData)
+            raise ValueError(errorMessage)
 
     def processUserData(self):
         for item in self.userData:
