@@ -42,11 +42,11 @@ class QuestionChecker:
         self.question = question
 
     def validateQuestion(self):
-        questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
-        wordsInSpecificQuestion = self.question.split()
         if not self.question.endswith('?'):
             raise TypeError("Your question is missing a question mark.")
         else:
+            questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
+            wordsInSpecificQuestion = self.question.split()
             numberOfWordsInSpecificQuestion = len(wordsInSpecificQuestion)
             wordsThatAreNotQuestionWords = 0
             for word in wordsInSpecificQuestion:
