@@ -5,9 +5,24 @@ class Prompt:
         self.specificQuestion = specificQuestion
 
     def personalize(self, basePrompt, userData):
+        self.validateQuestion()
         userProfile = self.createPromptUserProfile(userData)
         personalizedPrompt = self.personalizePrompt(basePrompt, userProfile)
         return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
+
+    def validateQuestion(self):
+        questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
+        wordsInSpecificQuestion = self.specificQuestion.split()
+        if not self.specificQuestion.endswith('?'):
+            raise TypeError("Your question is missing a question mark.")
+        else:
+            numberOfWordsInSpecificQuestion = len(wordsInSpecificQuestion)
+            wordsThatAreNotQuestionWords = 0
+            for word in wordsInSpecificQuestion:
+                if word not in questionWords:
+                    wordsThatAreNotQuestionWords+= 1
+                if numberOfWordsInSpecificQuestion == wordsThatAreNotQuestionWords:
+                    raise TypeError("Please form a proper question.")
 
     def createPromptUserProfile(self, userData):
         return PromptUserProfile(userData).createUserProfile()
@@ -130,4 +145,4 @@ class PromptPersonalizer:
             "I feel the above requires more background knowledge than I currently have.\n"
             "Please explain it in more detail, using expressive and clear language, "
             "while tailoring examples to the above user's profile interests and learning style."
-        )
+       )
