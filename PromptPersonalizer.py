@@ -42,18 +42,25 @@ class QuestionChecker:
         self.question = question
 
     def validateQuestion(self):
-        if not self.question.endswith('?'):
-            raise TypeError("Your question is missing a question mark.")
+        self.checkIfQuestionHasQuestionMark()
+        self.checkIfQuestionContainsAQuestionWord()
+
+    def checkIfQuestionHasQuestionMark(self):
+        if self.question.endswith('?'):
+            pass
         else:
-            questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
-            wordsInSpecificQuestion = self.question.split()
-            numberOfWordsInSpecificQuestion = len(wordsInSpecificQuestion)
-            wordsThatAreNotQuestionWords = 0
-            for word in wordsInSpecificQuestion:
-                if word not in questionWords:
-                    wordsThatAreNotQuestionWords+= 1
-                if numberOfWordsInSpecificQuestion == wordsThatAreNotQuestionWords:
-                    raise TypeError("Please form a proper question.")
+            raise TypeError("Your question is missing a question mark.")
+
+    def checkIfQuestionContainsAQuestionWord(self):
+        questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
+        wordsInSpecificQuestion = self.question.split()
+        numberOfWordsInSpecificQuestion = len(wordsInSpecificQuestion)
+        wordsThatAreNotQuestionWords = 0
+        for word in wordsInSpecificQuestion:
+            if word not in questionWords:
+                wordsThatAreNotQuestionWords+= 1
+            if numberOfWordsInSpecificQuestion == wordsThatAreNotQuestionWords:
+                raise TypeError("Please form a proper question.")
 
 class PromptUserProfile:
     def __init__(self, userData):
