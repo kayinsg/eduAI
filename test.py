@@ -79,6 +79,25 @@ class PromptsTests(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
+    def testShouldRejectQuestionsThatDoNotHaveAQuestionMark(self):
+        promptQuestion = "What is the problem with coupling"
+        prompt = Prompt(promptQuestion)
+        # WHEN the following module is executed:
+        with self.assertRaises(TypeError) as error:
+            prompt.validateQuestion()
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(str(error.exception), "Your question is missing a question mark." )
+
+    def testShouldRejectQuestionsThatAreTooShort(self):
+        # GIVEN the following preconditions corresponding to the system under test:
+        promptQuestion = "Triceratops?"
+        prompt = Prompt(promptQuestion)
+        # WHEN the following module is executed:
+        with self.assertRaises(TypeError) as error:
+            prompt.validateQuestion()
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(str(error.exception), "Please form a proper question." )
+
     def testShouldRaiseErrorForUserDataForUnsuitableData(self):
         def getFirstElements(nestedList):
             firstElements = []
@@ -183,26 +202,6 @@ Please explain it in more detail, using expressive and clear language, while tai
         finalPrompt = Prompt(specificQuestion).personalize(basePrompt, userData)
         # THEN the observable behavior should be verified as stated below:
         self.assertEqual(finalPrompt, expectedFinalPrompt)
-
-
-    def testShouldRejectQuestionsThatAreTooShort(self):
-        # GIVEN the following preconditions corresponding to the system under test:
-        promptQuestion = "Triceratops?"
-        prompt = Prompt(promptQuestion)
-        # WHEN the following module is executed:
-        with self.assertRaises(TypeError) as error:
-            prompt.validateQuestion()
-        # THEN the observable behavior should be verified as stated below:
-        self.assertEqual(str(error.exception), "Please form a proper question." )
-
-    def testShouldRejectQuestionsThatDoNotHaveAQuestionMark(self):
-        promptQuestion = "What is the problem with coupling"
-        prompt = Prompt(promptQuestion)
-        # WHEN the following module is executed:
-        with self.assertRaises(TypeError) as error:
-            prompt.validateQuestion()
-        # THEN the observable behavior should be verified as stated below:
-        self.assertEqual(str(error.exception), "Your question is missing a question mark." )
 
 
 if __name__ == '__main__':
