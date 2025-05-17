@@ -19,7 +19,7 @@ class Prompt:
 
     def personalizePrompt(self, basePrompt, userProfile):
         promptBuilder = PromptBuilder(basePrompt, self.specificQuestion)
-        return PromptPersonalizer(basePrompt, promptBuilder).personalize(userProfile)
+        return PromptPersonalizer(promptBuilder, basePrompt).personalize(userProfile)
 
 
 class QuestionChecker:
@@ -82,6 +82,7 @@ class UserDataValidator:
         errorMessage += ', '.join(self.requiredData)
         raise ValueError(errorMessage)
 
+
 class PromptUserProfile:
     def __init__(self, userData):
         self.userData = userData
@@ -118,10 +119,10 @@ class PromptUserProfile:
 
 
 class PromptPersonalizer:
-    def __init__(self, basePrompt, promptBuilder):
+    def __init__(self, promptBuilder, basePrompt):
+        self.promptBuilder = promptBuilder
         self.basePrompt = basePrompt
         self.promptUserProfile = {}
-        self.promptBuilder = promptBuilder
 
     def personalize(self, userProfile):
         self.buildUserProfileHashMap(userProfile)
