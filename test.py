@@ -79,6 +79,33 @@ class PromptsTests(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
+    def testShouldRaiseErrorForUserDataForUnsuitableData(self):
+        def getFirstElements(nestedList):
+            firstElements = []
+            for sublist in nestedList:
+                firstElements.append(sublist[0])
+            return firstElements
+
+        def getInappropriateUserData():
+            return [
+                ['InappropriateValue', 'Doe'],
+                ['DateOfBirth', '03-22-1995'],
+                ['Not To Be Here', 9],
+                ['TypeOfLearner', 'Textual'],
+                ['ya', 'Painting']
+            ]
+        inappropriateUserData = getInappropriateUserData()
+        specificQuestion = ""
+        basePrompt = ""
+        prompt = Prompt(specificQuestion)
+        inappropriateKeys = getFirstElements(inappropriateUserData)
+
+        with self.assertRaises(ValueError) as error:
+            prompt.personalize(basePrompt, inappropriateUserData)
+
+        self.assertNotEqual(inappropriateKeys, ['DateOfBirth', 'GradeLevel', 'TypeOfLearner', 'StrongPersonalInterest'] )
+        self.assertEqual(str(error.exception), 'You have malformed user data. Your data must contain all of the following values: DateOfBirth, GradeLevel, TypeOfLearner, StrongPersonalInterest')
+
     def testShouldSuccesfullyProduceFinalPrompt(self):
         # GIVEN the following preconditions corresponding to the system under test:
         def getUserData():
@@ -158,32 +185,6 @@ Please explain it in more detail, using expressive and clear language, while tai
         # THEN the observable behavior should be verified as stated below:
         self.assertEqual(finalPrompt, expectedFinalPrompt)
 
-    def testShouldRaiseErrorForUserDataForUnsuitableData(self):
-        def getFirstElements(nestedList):
-            firstElements = []
-            for sublist in nestedList:
-                firstElements.append(sublist[0])
-            return firstElements
-
-        def getInappropriateUserData():
-            return [
-                ['InappropriateValue', 'Doe'],
-                ['DateOfBirth', '03-22-1995'],
-                ['Not To Be Here', 9],
-                ['TypeOfLearner', 'Textual'],
-                ['ya', 'Painting']
-            ]
-        inappropriateUserData = getInappropriateUserData()
-        specificQuestion = ""
-        basePrompt = ""
-        prompt = Prompt(specificQuestion)
-        inappropriateKeys = getFirstElements(inappropriateUserData)
-
-        with self.assertRaises(ValueError) as error:
-            prompt.personalize(basePrompt, inappropriateUserData)
-
-        self.assertNotEqual(inappropriateKeys, ['DateOfBirth', 'GradeLevel', 'TypeOfLearner', 'StrongPersonalInterest'] )
-        self.assertEqual(str(error.exception), 'You have malformed user data. Your data must contain all of the following values: DateOfBirth, GradeLevel, TypeOfLearner, StrongPersonalInterest')
 
 if __name__ == '__main__':
     unittest.main(testRunner=ColourTextTestRunner(verbosity=2))
