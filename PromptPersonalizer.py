@@ -15,6 +15,7 @@ class Prompt:
         QuestionChecker(self.specificQuestion).validateQuestion()
 
     def createPromptUserProfile(self, userData):
+        UserDataValidator(userData).validate()
         return PromptUserProfile(userData).createUserProfile()
 
     def personalizePrompt(self, basePrompt, userProfile):
@@ -62,34 +63,15 @@ class QuestionChecker:
             if numberOfWordsInSpecificQuestion == wordsThatAreNotQuestionWords:
                 raise TypeError("Please form a proper question.")
 
+
 class PromptUserProfile:
     def __init__(self, userData):
         self.userData = userData
         self.userProfile = {}
 
     def createUserProfile(self):
-        self.validateUserData()
         self.processUserData()
         return self.getCompletedUserProfile()
-
-    def validateUserData(self):
-        requiredData = [
-            'DateOfBirth',
-            'GradeLevel',
-            'TypeOfLearner',
-            'StrongPersonalInterest',
-        ]
-        receivedKeys = []
-        for item in self.userData:
-            receivedKeys.append(item[0])
-        missingKeys = []
-        for key in requiredData:
-            if key not in receivedKeys:
-                missingKeys.append(key)
-        if len(missingKeys) > 0:
-            errorMessage = 'You have malformed user data. Your data must contain all of the following values: '
-            errorMessage += ', '.join(requiredData)
-            raise ValueError(errorMessage)
 
     def processUserData(self):
         for item in self.userData:
@@ -115,6 +97,41 @@ class PromptUserProfile:
             ['TypeOfLearner', self.userProfile['TypeOfLearner']],
             ['StrongPersonalInterest', self.userProfile['StrongPersonalInterest']],
         ]
+
+
+class UserDataValidator:
+    def __init__(self, userData):
+        self.userData = userData
+        self.requiredData = [
+            'DateOfBirth',
+            'GradeLevel',
+            'TypeOfLearner',
+            'StrongPersonalInterest',
+        ]
+
+    def validate(self):
+        missingKeys = self.getMissingKeys()
+        if missingKeys:
+            self.raiseValidationError()
+
+    def getMissingKeys(self):
+        receivedKeys = self.getReceivedKeys()
+        missingKeys = []
+        for key in self.requiredData:
+            if key not in receivedKeys:
+                missingKeys.append(key)
+        return missingKeys
+
+    def getReceivedKeys(self):
+        receivedKeys = []
+        for item in self.userData:
+            receivedKeys.append(item[0])
+        return receivedKeys
+
+    def raiseValidationError(self):
+        errorMessage = 'You have malformed user data. Your data must contain all of the following values: '
+        errorMessage += ', '.join(self.requiredData)
+        raise ValueError(errorMessage)
 
 
 class PromptPersonalizer:
