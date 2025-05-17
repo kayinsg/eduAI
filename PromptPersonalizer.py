@@ -11,10 +11,10 @@ class Prompt:
         return self.personalizePrompt(basePrompt, userProfile)
 
     def validateQuestion(self):
-        QuestionChecker(self.specificQuestion).validateQuestion()
+        PromptQuestionChecker(self.specificQuestion).validateQuestion()
 
     def createPromptUserProfile(self, userData):
-        UserDataValidator(userData).validate()
+        PromptUserDataValidator(userData).validate()
         return PromptUserProfile(userData).createUserProfile()
 
     def personalizePrompt(self, basePrompt, userProfile):
@@ -22,7 +22,7 @@ class Prompt:
         return PromptPersonalizer(promptBuilder, basePrompt).personalize(userProfile)
 
 
-class QuestionChecker:
+class PromptQuestionChecker:
     def __init__(self, question):
         self.question = question
 
@@ -48,7 +48,7 @@ class QuestionChecker:
                 raise TypeError("Please form a proper question.")
 
 
-class UserDataValidator:
+class PromptUserDataValidator:
     def __init__(self, userData):
         self.userData = userData
         self.requiredData = [
