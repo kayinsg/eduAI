@@ -64,41 +64,6 @@ class QuestionChecker:
                 raise TypeError("Please form a proper question.")
 
 
-class PromptUserProfile:
-    def __init__(self, userData):
-        self.userData = userData
-        self.userProfile = {}
-
-    def createUserProfile(self):
-        self.processUserData()
-        return self.getCompletedUserProfile()
-
-    def processUserData(self):
-        for item in self.userData:
-            field = item[0]
-            value = item[1]
-
-            if field in ("FirstName", "LastName"):
-                pass
-            elif field == 'DateOfBirth':
-                self.userProfile['Age'] = self.computeAgeFromDateOfBirth(value)
-            else:
-                self.userProfile[field] = value
-
-    def computeAgeFromDateOfBirth(self, dateOfBirth):
-        birthYear = int(dateOfBirth.split('-')[2])
-        currentYear = pendulum.now().year
-        return currentYear - birthYear
-
-    def getCompletedUserProfile(self):
-        return [
-            ['Age', self.userProfile['Age']],
-            ['Grade Level', self.userProfile['GradeLevel']],
-            ['TypeOfLearner', self.userProfile['TypeOfLearner']],
-            ['StrongPersonalInterest', self.userProfile['StrongPersonalInterest']],
-        ]
-
-
 class UserDataValidator:
     def __init__(self, userData):
         self.userData = userData
@@ -132,6 +97,40 @@ class UserDataValidator:
         errorMessage = 'You have malformed user data. Your data must contain all of the following values: '
         errorMessage += ', '.join(self.requiredData)
         raise ValueError(errorMessage)
+
+class PromptUserProfile:
+    def __init__(self, userData):
+        self.userData = userData
+        self.userProfile = {}
+
+    def createUserProfile(self):
+        self.processUserData()
+        return self.getCompletedUserProfile()
+
+    def processUserData(self):
+        for item in self.userData:
+            field = item[0]
+            value = item[1]
+
+            if field in ("FirstName", "LastName"):
+                pass
+            elif field == 'DateOfBirth':
+                self.userProfile['Age'] = self.computeAgeFromDateOfBirth(value)
+            else:
+                self.userProfile[field] = value
+
+    def computeAgeFromDateOfBirth(self, dateOfBirth):
+        birthYear = int(dateOfBirth.split('-')[2])
+        currentYear = pendulum.now().year
+        return currentYear - birthYear
+
+    def getCompletedUserProfile(self):
+        return [
+            ['Age', self.userProfile['Age']],
+            ['Grade Level', self.userProfile['GradeLevel']],
+            ['TypeOfLearner', self.userProfile['TypeOfLearner']],
+            ['StrongPersonalInterest', self.userProfile['StrongPersonalInterest']],
+        ]
 
 
 class PromptPersonalizer:
