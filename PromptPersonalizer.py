@@ -1,5 +1,6 @@
 import pendulum
 
+
 class Prompt:
     def __init__(self, specificQuestion):
         self.specificQuestion = specificQuestion
@@ -11,18 +12,7 @@ class Prompt:
         return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
 
     def validateQuestion(self):
-        questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
-        wordsInSpecificQuestion = self.specificQuestion.split()
-        if not self.specificQuestion.endswith('?'):
-            raise TypeError("Your question is missing a question mark.")
-        else:
-            numberOfWordsInSpecificQuestion = len(wordsInSpecificQuestion)
-            wordsThatAreNotQuestionWords = 0
-            for word in wordsInSpecificQuestion:
-                if word not in questionWords:
-                    wordsThatAreNotQuestionWords+= 1
-                if numberOfWordsInSpecificQuestion == wordsThatAreNotQuestionWords:
-                    raise TypeError("Please form a proper question.")
+        QuestionChecker(self.specificQuestion).validateQuestion()
 
     def createPromptUserProfile(self, userData):
         return PromptUserProfile(userData).createUserProfile()
@@ -46,6 +36,24 @@ class Prompt:
 
             return modifiedPrompt
 
+
+class QuestionChecker:
+    def __init__(self, question):
+        self.question = question
+
+    def validateQuestion(self):
+        questionWords = ['Why', 'What', 'How', 'Where', 'When', 'Who']
+        wordsInSpecificQuestion = self.question.split()
+        if not self.question.endswith('?'):
+            raise TypeError("Your question is missing a question mark.")
+        else:
+            numberOfWordsInSpecificQuestion = len(wordsInSpecificQuestion)
+            wordsThatAreNotQuestionWords = 0
+            for word in wordsInSpecificQuestion:
+                if word not in questionWords:
+                    wordsThatAreNotQuestionWords+= 1
+                if numberOfWordsInSpecificQuestion == wordsThatAreNotQuestionWords:
+                    raise TypeError("Please form a proper question.")
 
 class PromptUserProfile:
     def __init__(self, userData):
