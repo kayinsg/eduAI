@@ -206,6 +206,14 @@ Please explain it in more detail, using expressive and clear language, while tai
         self.assertTrue(questionContainsNoQuestionWords(promptQuestion))
         self.assertEqual(str(error.exception), "Please form a proper question." )
 
+    def testShouldRejectQuestionsThatDoNotHaveAQuestionMark(self):
+        promptQuestion = "What is the problem with coupling"
+        prompt = Prompt(promptQuestion)
+        # WHEN the following module is executed:
+        with self.assertRaises(TypeError) as error:
+            prompt.validateQuestion()
+        # THEN the observable behavior should be verified as stated below:
+        self.assertEqual(str(error.exception), "Your question is missing a question mark." )
 
 
 if __name__ == '__main__':
