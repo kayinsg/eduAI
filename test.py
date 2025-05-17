@@ -96,12 +96,11 @@ class PromptsTests(unittest.TestCase):
             ]
         inappropriateUserData = getInappropriateUserData()
         specificQuestion = ""
-        basePrompt = ""
         prompt = Prompt(specificQuestion)
         inappropriateKeys = getFirstElements(inappropriateUserData)
 
         with self.assertRaises(ValueError) as error:
-            prompt.personalize(basePrompt, inappropriateUserData)
+            prompt.createPromptUserProfile(inappropriateUserData)
 
         self.assertNotEqual(inappropriateKeys, ['DateOfBirth', 'GradeLevel', 'TypeOfLearner', 'StrongPersonalInterest'] )
         self.assertEqual(str(error.exception), 'You have malformed user data. Your data must contain all of the following values: DateOfBirth, GradeLevel, TypeOfLearner, StrongPersonalInterest')
