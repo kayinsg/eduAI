@@ -8,8 +8,7 @@ class Prompt:
     def personalize(self, basePrompt, userData):
         self.validateQuestion()
         userProfile = self.createPromptUserProfile(userData)
-        personalizedPrompt = self.personalizePrompt(basePrompt, userProfile)
-        return self.placeSpecificQuestionInPrompt(personalizedPrompt, self.specificQuestion)
+        return self.personalizePrompt(basePrompt, userProfile)
 
     def validateQuestion(self):
         QuestionChecker(self.specificQuestion).validateQuestion()
@@ -19,23 +18,8 @@ class Prompt:
         return PromptUserProfile(userData).createUserProfile()
 
     def personalizePrompt(self, basePrompt, userProfile):
-        return PromptPersonalizer(basePrompt).personalize(userProfile)
-
-    def placeSpecificQuestionInPrompt(self, basePrompt, specificQuestion):
-            separator = "---"
-            promptSections = basePrompt.split(separator, 1)
-
-            contentBeforeSeparator = promptSections[0]
-            contentAfterSeparator = promptSections[1]
-
-            modifiedPrompt = (
-                contentBeforeSeparator.rstrip() + '\n\n' +
-                f'"{specificQuestion}"\n\n' +
-                separator +
-                contentAfterSeparator
-            )
-
-            return modifiedPrompt
+        promptBuilder = PromptBuilder(basePrompt, self.specificQuestion)
+        return PromptPersonalizer(basePrompt, promptBuilder).personalize(userProfile)
 
 
 class QuestionChecker:
@@ -134,38 +118,47 @@ class PromptUserProfile:
 
 
 class PromptPersonalizer:
-    def __init__(self, basePrompt):
+    def __init__(self, basePrompt, promptBuilder):
         self.basePrompt = basePrompt
         self.promptUserProfile = {}
+        self.promptBuilder = promptBuilder
 
     def personalize(self, userProfile):
         self.buildUserProfileHashMap(userProfile)
-        personalizedPrompt = self.getFinalPrompt(self.basePrompt)
-        return personalizedPrompt
+        return self.promptBuilder.build(self.promptUserProfile)
 
     def buildUserProfileHashMap(self, userProfile):
         assignValuesToPromptUserProfile = lambda item: self.promptUserProfile.update({item[0]: item[1]})
         list(map(assignValuesToPromptUserProfile, userProfile))
 
-    def getFinalPrompt(self, basePrompt):
-        profileSection = self.getProfileSection()
+    def getFinalPrompt(self):
+        return self.promptBuilder.build(self.promptUserProfile)
+
+
+class PromptBuilder:
+    def __init__(self, basePrompt, specificQuestion):
+        self.basePrompt = basePrompt
+        self.specificQuestion = specificQuestion
+
+    def build(self, userProfile):
+        profileSection = self.getProfileSection(userProfile)
         questionClarifier = self.getQuestionClarifier()
 
         personalizedPrompt = (
-            f"{basePrompt}\n"
+            f"{self.basePrompt}\n"
             f"{profileSection}\n"
             f"{questionClarifier}"
         )
 
-        return personalizedPrompt
+        return self.placeSpecificQuestionInPrompt(personalizedPrompt)
 
-    def getProfileSection(self):
+    def getProfileSection(self, userProfile):
         return (
             "User Profile:\n"
-            f"- Age: {self.promptUserProfile['Age']}\n"
-            f"- Grade Level: {self.promptUserProfile['Grade Level']}\n"
-            f"- Learning Preference: {self.promptUserProfile['TypeOfLearner']}\n"
-            f"- Key Interest: {self.promptUserProfile['StrongPersonalInterest']}\n"
+            f"- Age: {userProfile['Age']}\n"
+            f"- Grade Level: {userProfile['Grade Level']}\n"
+            f"- Learning Preference: {userProfile['TypeOfLearner']}\n"
+            f"- Key Interest: {userProfile['StrongPersonalInterest']}\n"
         )
 
     def getQuestionClarifier(self):
@@ -177,3 +170,19 @@ class PromptPersonalizer:
             "Please explain it in more detail, using expressive and clear language, "
             "while tailoring examples to the above user's profile interests and learning style."
        )
+
+    def placeSpecificQuestionInPrompt(self, personalizedPrompt):
+            separator = "---"
+            promptSections = personalizedPrompt.split(separator, 1)
+
+            contentBeforeSeparator = promptSections[0]
+            contentAfterSeparator = promptSections[1]
+
+            modifiedPrompt = (
+                contentBeforeSeparator.rstrip() + '\n\n' +
+                f'"{self.specificQuestion}"\n\n' +
+                separator +
+                contentAfterSeparator
+            )
+
+            return modifiedPrompt
