@@ -185,5 +185,28 @@ Please explain it in more detail, using expressive and clear language, while tai
         self.assertEqual(finalPrompt, expectedFinalPrompt)
 
 
+    def testShouldRejectQuestionsThatAreTooShort(self):
+        def questionContainsNoQuestionWords(question):
+            questionWords = question.split(',')
+            numberOfWordsInQuestion = len(questionWords)
+            wordsContainingNoQuestionWords = 0
+            for word in questionWords:
+                if word not in ['Why', 'What', 'How', 'Where', 'When', 'Who']:
+                    wordsContainingNoQuestionWords+=1
+                if numberOfWordsInQuestion == wordsContainingNoQuestionWords:
+                    return True
+
+        # GIVEN the following preconditions corresponding to the system under test:
+        promptQuestion = "Triceratops?"
+        prompt = Prompt(promptQuestion)
+        # WHEN the following module is executed:
+        with self.assertRaises(TypeError) as error:
+            prompt.validateQuestion()
+        # THEN the observable behavior should be verified as stated below:
+        self.assertTrue(questionContainsNoQuestionWords(promptQuestion))
+        self.assertEqual(str(error.exception), "Please form a proper question." )
+
+
+
 if __name__ == '__main__':
     unittest.main(testRunner=ColourTextTestRunner(verbosity=2))
