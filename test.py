@@ -186,16 +186,6 @@ Please explain it in more detail, using expressive and clear language, while tai
 
 
     def testShouldRejectQuestionsThatAreTooShort(self):
-        def questionContainsNoQuestionWords(question):
-            questionWords = question.split(',')
-            numberOfWordsInQuestion = len(questionWords)
-            wordsContainingNoQuestionWords = 0
-            for word in questionWords:
-                if word not in ['Why', 'What', 'How', 'Where', 'When', 'Who']:
-                    wordsContainingNoQuestionWords+=1
-                if numberOfWordsInQuestion == wordsContainingNoQuestionWords:
-                    return True
-
         # GIVEN the following preconditions corresponding to the system under test:
         promptQuestion = "Triceratops?"
         prompt = Prompt(promptQuestion)
@@ -203,7 +193,6 @@ Please explain it in more detail, using expressive and clear language, while tai
         with self.assertRaises(TypeError) as error:
             prompt.validateQuestion()
         # THEN the observable behavior should be verified as stated below:
-        self.assertTrue(questionContainsNoQuestionWords(promptQuestion))
         self.assertEqual(str(error.exception), "Please form a proper question." )
 
     def testShouldRejectQuestionsThatDoNotHaveAQuestionMark(self):
